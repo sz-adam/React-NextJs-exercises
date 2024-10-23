@@ -1,0 +1,1 @@
+React and Next.js practice: Udemy, YouTube courses, or independent mini projects
