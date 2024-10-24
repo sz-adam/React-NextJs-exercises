@@ -1,14 +1,18 @@
-import React from 'react'
-import MainNavigation from '../components/MainNavigation'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import MainNavigation from "../components/MainNavigation";
+import { Outlet, useNavigation } from "react-router-dom";
 
 function Root() {
-  return <>
-  <MainNavigation />
-  <main>
-    <Outlet />
-  </main>
-  </>
+  const navigation = useNavigation();
+  return (
+    <>
+      <MainNavigation />
+      <main>
+        {/**navigation.state === 'loading' &&<p>Loading...</p>*/}
+        <Outlet />
+      </main>
+    </>
+  );
 }
 
-export default Root
+export default Root;
