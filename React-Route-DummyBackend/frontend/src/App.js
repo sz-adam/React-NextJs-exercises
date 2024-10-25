@@ -48,13 +48,21 @@ const route = createBrowserRouter([
             element: <EventPage />,
             loader: eventsLoader,
           },
+          //**Loader segítségével a detail adatokat átadjuk a szerkesztésnek , mert az eventId gyermek komponense */
           {
             path: ":eventId",
-            element: <EventDetailPage />,
+            id: "event-detail",
             loader: eventDetailLoader,
+            children: [
+              {
+                index: true,
+                element: <EventDetailPage />,
+              },
+              { path: "edit", element: <EditEventPage /> },
+            ],
           },
+
           { path: "new", element: <NewEventPage /> },
-          { path: ":eventId/edit", element: <EditEventPage /> },
         ],
       },
     ],
