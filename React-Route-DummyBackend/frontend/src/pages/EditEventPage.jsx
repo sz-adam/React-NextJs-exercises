@@ -1,14 +1,12 @@
+import { useRouteLoaderData } from "react-router-dom";
 
-
-import { useRouteLoaderData } from 'react-router-dom';
-
-import EventForm from '../components/EventForm';
+import EventForm from "../components/EventForm";
 
 function EditEventPage() {
   //a megadott utvonal azonoító alapján (id) kinyeri az adatokat és továbbítjuk az Eventformnak
-  const data = useRouteLoaderData('event-detail');
+  const data = useRouteLoaderData("event-detail");
 
-  return <EventForm event={data.event} />;
+  return <EventForm method="patch" event={data.event} />;
 }
 
 export default EditEventPage;
