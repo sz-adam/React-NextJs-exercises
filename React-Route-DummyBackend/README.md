@@ -1,0 +1,1 @@
+Using the Udemy course: React - The Complete Guide 2024 (incl. Next.js, Redux), I gained a deeper insight into the additional features provided by react-router-dom beyond routing itself. These include handling API requests, delaying loading, using Form, managing errors, and reusing form components.
