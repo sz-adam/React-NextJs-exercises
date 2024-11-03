@@ -1,21 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import ErrorPage from "./pages/ErrorPage";
+import HomePage from "./pages/HomePage";
+import DetailsPage from "./pages/DetailsPage";
+import FavoritesPage from "./pages/FavoritesPage";
+import Root from "./pages/Root";
+
+const route = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+
+      },
+      {
+        path: "detail/:movieId",
+        element: <DetailsPage />,
+
+      },
+      {
+        path: "favorites",
+        element: <FavoritesPage />,
+
+      },
+    ],
+  },
+]);
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <h1 className="text-3xl font-bold text-blue-500">
-          Hello, Tailwind with React + Vite + TypeScript!
-        </h1>
-      </div>
-      
-    </>
-  )
+  return <RouterProvider router={route} />;
 }
 
 export default App
