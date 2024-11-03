@@ -8,20 +8,15 @@ const Navigation = (props: Props) => {
         <header className="bg-gray-800 text-white shadow-lg">
             <nav className=" mx-auto flex items-center p-4">
                 {/* Bal oldal */}
-                <ul className="flex-1">
-                    <li className="text-2xl text-amber-500">
-                        <NavLink
-                            to="/"
-                        >
-                            <div className="flex items-center">
-                                <RiMovie2Line />  <p className="font-semibold">MovieDB</p>
-                            </div>
-                        </NavLink>
-                    </li>
-                </ul>
+                <div className="flex items-center">
+                    <NavLink to="/" className="flex items-center">
+                        <RiMovie2Line className="text-2xl text-amber-500" />
+                        <p className="text-2xl text-amber-500 font-semibold ml-2">MovieDB</p>
+                    </NavLink>
+                </div>
 
                 {/* Jobb oldal */}
-                <ul className="flex space-x-4 text-xl">
+                <ul className="flex space-x-4 text-xl ml-auto">
                     <li>
                         <NavLink
                             to="/"
