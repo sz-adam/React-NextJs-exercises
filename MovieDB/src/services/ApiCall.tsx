@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { json } from "react-router-dom";
+import { MovieType } from '../model/movieType';
 
-async function fetchMovies(): Promise<any[]> {
+async function fetchMovies(): Promise<MovieType[]> {
     try {
         const types = ['movie', 'series', 'episode'];
-        const allMovies: any[] = []; // Összes film
+        const allMovies: MovieType[] = []; // Összes film
       
         for (const type of types) {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}?s=action&type=${type}&apikey=${import.meta.env.VITE_API_KEY}`);
@@ -23,7 +24,7 @@ async function fetchMovies(): Promise<any[]> {
 }
 
 // Véletlenszerű film kiválasztása
-const selectRandomMovies = (movieList: any[]) => {   
+const selectRandomMovies = (movieList: MovieType[]) => {   
     const shuffled = movieList.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 20);
     return selected;
