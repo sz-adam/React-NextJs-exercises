@@ -10,17 +10,16 @@ export async function loader() {
 }
 
 const HomePage = () => {
-  const movies = useRouteLoaderData("home") as Promise<MovieType[]>; 
-  console.log(movies)
+  const movies = useRouteLoaderData("home") as Promise<MovieType[]>;
 
   return (
-    <div>
+    <div>      
       <Suspense fallback={<p className='text-3xl font-bold mt-1'>Loading movies...</p>}>
         <Await resolve={movies}>
-          {(loadedMovies: MovieType[]) => ( 
+          {(loadedMovies: MovieType[]) => (
             <div className="flex flex-wrap gap-4 justify-center">
               {Array.isArray(loadedMovies) && loadedMovies.length > 0 ? (
-                loadedMovies.map((movie: MovieType) => ( 
+                loadedMovies.map((movie: MovieType) => (
                   <Card key={movie.imdbID} movie={movie} />
                 ))
               ) : (
