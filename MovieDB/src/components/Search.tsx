@@ -16,7 +16,7 @@ const Search = ({ onSearch }: Props) => {
         onSearch(inputValue);
     };
 
-    // Enter leütésének kezelése
+    // Enter leütése
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleSearchClick();
