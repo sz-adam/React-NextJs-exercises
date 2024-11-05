@@ -9,7 +9,7 @@ type Props = {
 const Card: React.FC<Props> = ({ movie }) => {
 
     return (
-        <div className=" rounded overflow-hidden shadow-lg m-4 flex flex-col">
+        <div className=" rounded-2xl w-96 overflow-hidden shadow-xl m-4 flex flex-col">
             <img className="w-full h-5/6 object-cover transition-transform duration-300 hover:scale-105" src={movie.Poster} alt={movie.Title} />
             <div className="p-6 ">
                 <div className="font-bold text-lg ">{movie.Title}</div>
