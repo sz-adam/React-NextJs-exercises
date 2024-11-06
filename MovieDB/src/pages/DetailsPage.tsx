@@ -1,11 +1,14 @@
-import React from 'react'
+import { useLoaderData } from 'react-router-dom';
+import { MovieDetailsType } from '../model/movieType';
 
-type Props = {}
+const DetailsPage = () => {
+  const movie = useLoaderData() as MovieDetailsType;
 
-const DetailsPage = (props: Props) => {
   return (
-    <div>DetailsPage</div>
-  )
-}
+    <div>
+      <h1>{movie.Title}</h1>   
+    </div>
+  );
+};
 
-export default DetailsPage
+export default DetailsPage;

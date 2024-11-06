@@ -1,12 +1,17 @@
 import React from 'react';
 import { MovieType } from '../model/movieType';
 import { FaEye } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     movie: MovieType;
 };
 
 const Card: React.FC<Props> = ({ movie }) => {
+    const navigate = useNavigate();
+    const handleViewClick = () => {
+        navigate(`/details/${movie.imdbID}`);
+    };  
 
     return (
         <div className=" rounded-2xl w-96 overflow-hidden shadow-xl m-4 flex flex-col">
@@ -22,7 +27,9 @@ const Card: React.FC<Props> = ({ movie }) => {
             </div>
             <div className="flex justify-center mt-auto mb-4">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-7 rounded-full flex items-center  gap-2">
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-7 rounded-full flex items-center  gap-2"
+                    onClick={handleViewClick}
+                >
                     View
                     <FaEye />
                 </button>

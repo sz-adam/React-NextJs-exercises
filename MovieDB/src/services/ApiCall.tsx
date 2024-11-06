@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { json } from "react-router-dom";
-import { MovieType } from '../model/movieType';
+import { json, LoaderFunctionArgs } from "react-router-dom";
+import { MovieDetailsType, MovieType } from '../model/movieType';
 
 async function fetchMovies(): Promise<MovieType[]> {
     try {
@@ -43,6 +43,24 @@ async function fetchMoviesBySearch(searchTerm: string): Promise<MovieType[]> {
     }
 }
 
+
+async function fetchMovieDetails({ params }: LoaderFunctionArgs): Promise<MovieDetailsType[]>{
+    const { id } = params;
+    if (!id) {
+        throw json({ message: "No movie ID provided" }, { status: 400 });
+    }
+
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}?i=${id}&apikey=${import.meta.env.VITE_API_KEY}`);
+        console.log(response.data)
+        return response.data as MovieDetailsType[];
+    } catch (error: any) {
+        console.error("Error fetching movie details:", error);
+        throw json({ message: "Could not fetch movie details" }, { status: 500 });
+    }
+}
+
+
 // Véletlenszerű film kiválasztása
 const selectRandomMovies = (movieList: MovieType[]) => {
     const shuffled = movieList.sort(() => 0.5 - Math.random());
@@ -50,4 +68,4 @@ const selectRandomMovies = (movieList: MovieType[]) => {
     return selected;
 }
 
-export { fetchMovies, fetchMoviesBySearch };
+export { fetchMovies, fetchMoviesBySearch, fetchMovieDetails };

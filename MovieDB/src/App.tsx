@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import DetailsPage from "./pages/DetailsPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import Root from "./pages/Root";
-import { fetchMovies } from "./services/apiCall";
+import { fetchMovieDetails, fetchMovies } from "./services/ApiCall";
 
 const route = createBrowserRouter([
   {
@@ -14,14 +14,14 @@ const route = createBrowserRouter([
     children: [
       {
         index: true,
-        id:"home",
+        id: "home",
         element: <HomePage />,
         loader: fetchMovies
       },
       {
-        path: "detail/:movieId",
+        path: '/details/:id',
         element: <DetailsPage />,
-
+        loader: fetchMovieDetails
       },
       {
         path: "favorites",
