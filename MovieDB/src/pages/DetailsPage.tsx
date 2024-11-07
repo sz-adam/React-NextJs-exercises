@@ -1,13 +1,12 @@
 import { useLoaderData } from 'react-router-dom';
 import { MovieDetailsType } from '../model/movieType';
+import DetailsCard from '../components/MovieDetails/DetailsCard';
 
 const DetailsPage = () => {
   const movie = useLoaderData() as MovieDetailsType;
 
   return (
-    <div>
-      <h1>{movie.Title}</h1>   
-    </div>
+    <DetailsCard detailsMovie={movie} />
   );
 };
 
