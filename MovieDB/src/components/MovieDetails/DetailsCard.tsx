@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MovieDetailsType } from '../../model/movieType';
 import { useNavigate } from 'react-router-dom';
 import DetailsAdditionalInfo from './DetailsAdditionalInfo';
 import { FaRegHeart } from "react-icons/fa";
+import PosterModal from './PosterModal';
 
 type Props = {
   detailsMovie: MovieDetailsType
@@ -10,6 +11,7 @@ type Props = {
 
 const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
   const navigate = useNavigate()
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleBackClick = () => {
     navigate(".."); // Visszavisz az előző oldalra
@@ -26,6 +28,14 @@ const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
     window.scrollTo(0, 0);
   }, []);
 
+  const handlePosterClick = () => {
+    setIsModalOpen(true); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);  
+  };
+
   return (
     <div className="relative min-h-screen bg-gray-900 text-white py-8">
       {/* Background kép */}
@@ -40,6 +50,7 @@ const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
           src={detailsMovie.Poster}
           alt={detailsMovie.Title}
           className="w-60 rounded-lg shadow-lg mb-4"
+          onClick={handlePosterClick}
         />
           {/* Movie Title */}
           <div className="flex-col w-full ">
@@ -107,6 +118,7 @@ const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
 
         </div>
       </div>
+      <PosterModal isOpen={isModalOpen} imageUrl={detailsMovie.Poster} onClose={closeModal} />
     </div>
   );
 }
