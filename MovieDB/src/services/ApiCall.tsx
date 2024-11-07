@@ -52,7 +52,6 @@ async function fetchMovieDetails({ params }: LoaderFunctionArgs): Promise<MovieD
 
     try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}?i=${id}&apikey=${import.meta.env.VITE_API_KEY}`);
-        console.log(response.data)
         return response.data as MovieDetailsType[];
     } catch (error: any) {
         console.error("Error fetching movie details:", error);
