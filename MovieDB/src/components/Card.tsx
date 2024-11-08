@@ -2,19 +2,24 @@ import React from 'react';
 import { MovieType } from '../model/movieType';
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 type Props = {
     movie: MovieType;
 };
 
 const Card: React.FC<Props> = ({ movie }) => {
+    const { isFavorite } = useFavorites();
+    const favoriteStatus = isFavorite(movie.imdbID);
+
     const navigate = useNavigate();
     const handleViewClick = () => {
         navigate(`/details/${movie.imdbID}`);
     };  
 
+
     return (
-        <div className=" rounded-2xl w-96 overflow-hidden shadow-xl m-4 flex flex-col">
+        <div className={`rounded-2xl w-96 overflow-hidden shadow-xl m-4 flex flex-col ${favoriteStatus ? 'bg-slate-400' : 'bg-white'}`}>
             <img className="w-full h-5/6 object-cover transition-transform duration-300 hover:scale-105" src={movie.Poster} alt={movie.Title} />
             <div className="p-6 ">
                 <div className="font-bold text-lg ">{movie.Title}</div>
