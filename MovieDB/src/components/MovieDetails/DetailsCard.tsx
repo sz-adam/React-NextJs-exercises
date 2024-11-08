@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import DetailsAdditionalInfo from './DetailsAdditionalInfo';
 import { FaRegHeart } from "react-icons/fa";
 import PosterModal from './PosterModal';
+import { useFavorites } from '../../context/FavoritesContext';
 
 type Props = {
   detailsMovie: MovieDetailsType
@@ -12,6 +13,15 @@ type Props = {
 const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+
+  const toggleFavorite = () => {
+    if (isFavorite(detailsMovie.imdbID)) {
+      removeFavorite(detailsMovie.imdbID);
+    } else {
+      addFavorite(detailsMovie.imdbID);
+    }
+  };
 
   const handleBackClick = () => {
     navigate(".."); // Visszavisz az előző oldalra
@@ -29,11 +39,11 @@ const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
   }, []);
 
   const handlePosterClick = () => {
-    setIsModalOpen(true); 
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);  
+    setIsModalOpen(false);
   };
 
   return (
@@ -97,8 +107,8 @@ const DetailsCard: React.FC<Props> = ({ detailsMovie }) => {
         {/* Button */}
 
         <div className="flex flex-col md:flex-row items-center mt-2">
-          <button className="flex items-center px-6 py-2 mx-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300  md:w-auto text-lg mb-3 md:mb-0">
-            Add Favorites <FaRegHeart className='ml-3' />
+          <button onClick={toggleFavorite} className="flex items-center px-6 py-2 mx-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300  md:w-auto text-lg mb-3 md:mb-0">
+            {isFavorite(detailsMovie.imdbID) ? "Remove from Favorites" : <>Add Favorites <FaRegHeart className='ml-3' /> </>}
           </button>
 
           {/**Back Button */}

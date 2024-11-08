@@ -60,6 +60,25 @@ async function fetchMovieDetails({ params }: LoaderFunctionArgs): Promise<MovieD
 }
 
 
+async function fetchFavorites(favoritesIds: string[]): Promise<MovieType[]> {
+    if (!Array.isArray(favoritesIds) || favoritesIds.length === 0) {
+        return [];
+    }
+    try {
+        const movieRequests = favoritesIds.map(id =>
+            axios.get(`${import.meta.env.VITE_API_URL}?i=${id}&apikey=${import.meta.env.VITE_API_KEY}`)
+        );
+        const responses = await Promise.all(movieRequests);
+        return responses.map(response => response.data as MovieType);
+    } catch (error) {
+        console.error("Error fetching favorite movies:", error);
+        throw json({ message: "Could not fetch favorite movies" }, { status: 500 });
+    }
+}
+
+
+
+
 // Véletlenszerű film kiválasztása
 const selectRandomMovies = (movieList: MovieType[]) => {
     const shuffled = movieList.sort(() => 0.5 - Math.random());
@@ -67,4 +86,4 @@ const selectRandomMovies = (movieList: MovieType[]) => {
     return selected;
 }
 
-export { fetchMovies, fetchMoviesBySearch, fetchMovieDetails };
+export { fetchMovies, fetchMoviesBySearch, fetchMovieDetails, fetchFavorites };

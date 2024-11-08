@@ -5,6 +5,7 @@ import DetailsPage from "./pages/DetailsPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import Root from "./pages/Root";
 import { fetchMovieDetails, fetchMovies } from "./services/ApiCall";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
 const route = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const route = createBrowserRouter([
       {
         path: "favorites",
         element: <FavoritesPage />,
-
+          
       },
     ],
   },
@@ -35,7 +36,9 @@ const route = createBrowserRouter([
 
 function App() {
 
-  return <RouterProvider router={route} />;
+  return <FavoritesProvider> {/* Biztosítja a kedvencek contextet */}
+    <RouterProvider router={route} />
+  </FavoritesProvider>
 }
 
 export default App
