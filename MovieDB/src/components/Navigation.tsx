@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { RiMovie2Line } from "react-icons/ri";
 
-type Props = {}
-
-const Navigation = (props: Props) => {
+const Navigation = () => {
     return (
         <header className="bg-gray-800 text-white shadow-lg">
             <nav className=" mx-auto flex items-center p-4">

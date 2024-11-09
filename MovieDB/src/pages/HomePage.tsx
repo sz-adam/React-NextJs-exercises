@@ -12,12 +12,10 @@ export async function loader() {
 
 const HomePage = () => {
   const movies = useRouteLoaderData("home") as Promise<MovieType[]>;
-  const [searchTerm, setSearchTerm] = useState('');
   const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSearch = async (searchTerm: string) => {
-    setSearchTerm(searchTerm);
     setLoading(true);
     if (searchTerm) {
       try {
@@ -32,7 +30,6 @@ const HomePage = () => {
     }
     setLoading(false);
   };
-
   return (
     <div>
       <div className='flex justify-center mt-4'>
