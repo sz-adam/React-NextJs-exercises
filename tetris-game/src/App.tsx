@@ -1,11 +1,11 @@
+import Game from "./page/Game";
+
 function App() {
   return (
     <>
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>    
+      <Game />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
