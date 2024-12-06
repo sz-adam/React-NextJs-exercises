@@ -4,6 +4,14 @@ interface GameBoardprops {
   generateBoard: () => string[][];
 }
 
+  //TODO: Tetrominok létrehozása / véletlenszerű generálása 
+  //TODO: véletlenszerű megjelenítése középen
+  //TODO: esés
+  //TODO: mozgatás / forgatás
+  //TODO: sorok törlése
+  //TODO: pontozás / megjelenítés
+  //TODO: következő megjelenítése 
+
 const GameBoard: React.FC<GameBoardprops> = ({ generateBoard }) => {
   const [board, setBoard] = useState(generateBoard());
 
