@@ -1,9 +1,4 @@
-import { useState } from "react";
-import { getRandomTetromino } from "../utils/tetromino";
-
-interface GameBoardprops {
-  generateBoard: () => string[][];
-}
+import { useGameContext } from "../context/GameContext";
 
 //TODO: Tetrominok létrehozása / véletlenszerű generálása
 //TODO: véletlenszerű megjelenítése középen
@@ -13,37 +8,12 @@ interface GameBoardprops {
 //TODO: pontozás / megjelenítés
 //TODO: következő megjelenítése
 
-const GameBoard: React.FC<GameBoardprops> = ({ generateBoard }) => {
-  const [board, setBoard] = useState<string[][]>(generateBoard());
-  const [tetromino, setTetromino] = useState<number[][]>(getRandomTetromino());
-  const [position, setPosition] = useState({ row: 0, col: 3 });
-
-  //táblán elhelyezés
-  const placeTetrominoOnBoard = (): string[][] => {
-    const newBoard = [...board];
-
-    tetromino.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell) {
-          const boardX = position.col + x;
-          const boardY = position.row + y;
-          //nem lépi-e túl a játékteret
-          if (boardY < board.length && boardX < board[0].length) {
-            newBoard[boardY][boardX] = "tetromino";
-          }
-        }
-      });
-    });
-
-    return newBoard;
-  };
-
-  // tábla frissítése
-  const updatedBoard = placeTetrominoOnBoard();
+const GameBoard: React.FC = () => {
+  const { board } = useGameContext();
 
   return (
     <div className="grid grid-cols-10 gap-0.5 border border-zinc-400">
-      {updatedBoard.map((row, rowIndex) =>
+      {board.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
           <div
             key={`${rowIndex}-${colIndex}`}
