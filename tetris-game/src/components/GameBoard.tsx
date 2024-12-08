@@ -47,9 +47,9 @@ const GameBoard: React.FC<GameBoardprops> = ({ generateBoard }) => {
         row.map((cell, colIndex) => (
           <div
             key={`${rowIndex}-${colIndex}`}
-            className={`w-8 h-8 bg-slate-800 border border-slate-900 ${
-              cell === "tetromino" ? "bg-blue-600" : ""
-            }`}
+            className={`w-8 h-8 ${
+              cell === "tetromino" ? "bg-blue-600" : "bg-slate-800"
+            }  border border-slate-900`}
           ></div>
         ))
       )}
