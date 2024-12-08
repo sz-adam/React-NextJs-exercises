@@ -1,5 +1,7 @@
-export const getRandomTetromino = () => {
-  const shapes = [
+import { Tetromino } from "../model/GameModel";
+
+export const getRandomTetromino = (): Tetromino => {
+  const shapes: Tetromino[] = [
     [
       [1, 1, 1, 1],
       [0, 0, 0, 0],
