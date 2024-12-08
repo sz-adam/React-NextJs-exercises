@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { GameState } from "../model/GameModel";
 import { getRandomTetromino } from "../utils/tetromino";
+import colors from "../utils/colors";
 
 const defaultState: GameState = {
   board: [],
@@ -8,6 +9,7 @@ const defaultState: GameState = {
   position: { row: 0, col: 3 },
   generateBoard: () => [],
   placeTetrominoOnBoard: () => [],
+  color: "",
 };
 
 const cols = 10;
@@ -22,9 +24,14 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
     return Array.from({ length: rows }, () => Array(cols).fill(null));
   };
 
+  const randomColor = () => {
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
   const [board, setBoard] = useState<string[][]>(generateBoard());
   const [tetromino, setTetromino] = useState<number[][]>(getRandomTetromino());
   const [position, setPosition] = useState({ row: 0, col: 3 });
+  const [color, setColor] = useState<string>(randomColor);
 
   //táblán elhelyezés
   const placeTetrominoOnBoard = (): string[][] => {
@@ -37,7 +44,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
           const boardY = position.row + y;
           //nem lépi-e túl a játékteret
           if (boardY < board.length && boardX < board[0].length) {
-            newBoard[boardY][boardX] = "tetromino";
+            newBoard[boardY][boardX] = color;
           }
         }
       });
@@ -57,6 +64,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         position,
         generateBoard,
         placeTetrominoOnBoard,
+        color,
       }}
     >
       {children}

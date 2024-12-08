@@ -6,4 +6,5 @@ export interface GameState {
   position: { row: number; col: number };
   generateBoard: () => string[][];
   placeTetrominoOnBoard: () => string[][];
+  color: string;
 }
