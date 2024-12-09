@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { GameState } from "../model/GameModel";
 import { getRandomTetromino } from "../utils/tetromino";
 import colors from "../utils/colors";
@@ -35,7 +41,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
 
   //táblán elhelyezés
   const placeTetrominoOnBoard = (): string[][] => {
-    const newBoard = [...board];
+    const newBoard = generateBoard();
 
     tetromino.forEach((row, y) => {
       row.forEach((cell, x) => {
@@ -55,6 +61,24 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
 
   // tábla frissítése
   const updatedBoard = placeTetrominoOnBoard();
+
+  //Lefelé mozgás
+  const moveDown = () => {
+    setPosition((prev) => {
+      // pozicio ellenörzése
+      if (prev.row + 1 + tetromino.length > rows) {
+        return prev;
+      }
+      return { ...prev, row: prev.row + 1 };
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      moveDown();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [position]);
 
   return (
     <GameContext.Provider
