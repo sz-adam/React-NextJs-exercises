@@ -8,6 +8,7 @@ import React, {
 import { GameState } from "../model/GameModel";
 import { getRandomTetromino } from "../utils/tetromino";
 import colors from "../utils/colors";
+import useGameControls from "../hook/Controls";
 
 const defaultState: GameState = {
   board: [],
@@ -79,6 +80,15 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
     }, 1000);
     return () => clearInterval(interval);
   }, [position]);
+
+  useGameControls({
+    position,
+    setPosition,
+    tetromino,
+    setTetromino,
+    cols,
+    rows,
+  });
 
   return (
     <GameContext.Provider
