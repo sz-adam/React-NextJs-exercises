@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { GameState } from "../model/GameModel";
 import { getRandomTetromino } from "../utils/tetromino";
 import colors from "../utils/colors";
@@ -42,7 +36,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
 
   //táblán elhelyezés
   const placeTetrominoOnBoard = (): string[][] => {
-    const newBoard = generateBoard();
+    const newBoard = board.map((row) => [...row]);
 
     tetromino.forEach((row, y) => {
       row.forEach((cell, x) => {
@@ -63,23 +57,47 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
   // tábla frissítése
   const updatedBoard = placeTetrominoOnBoard();
 
-  //Lefelé mozgás
-  const moveDown = () => {
-    setPosition((prev) => {
-      // pozicio ellenörzése
-      if (prev.row + 1 + tetromino.length > rows) {
-        return prev;
-      }
-      return { ...prev, row: prev.row + 1 };
+  //Alakzat rögzítése a pályán
+  const lockTetromino = () => {
+    setBoard((prevBoard) => {
+      const newBoard = [...prevBoard];
+      tetromino.forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell) {
+            const boardX = position.col + x;
+            const boardY = position.row + y;
+            if (boardY < rows && boardX < cols) {
+              newBoard[boardY][boardX] = color;
+            }
+          }
+        });
+      });
+      return newBoard;
     });
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      moveDown();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [position]);
+  // Új alakzat
+  const newTetromino = () => {
+    setTetromino(getRandomTetromino());
+    setPosition({ row: 0, col: 3 });
+    setColor(randomColor());
+  };
+
+  // alakzatok ütközése és a tábla alja
+  const isCollision = (): boolean => {
+    return tetromino.some((row, y) =>
+      row.some((cell, x) => {
+        if (cell) {
+          const boardX = position.col + x;
+          const boardY = position.row + y + 1;
+          if (boardY >= rows || board[boardY]?.[boardX]) {
+            return true;
+          }
+        }
+        return false;
+      })
+    );
+  };
 
   useGameControls({
     position,
@@ -87,7 +105,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
     tetromino,
     setTetromino,
     cols,
-    rows,
+    lockTetromino,
+    newTetromino,
+    isCollision,
   });
 
   return (

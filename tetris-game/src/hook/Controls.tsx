@@ -7,8 +7,10 @@ interface GameControls {
   >;
   tetromino: number[][];
   setTetromino: React.Dispatch<React.SetStateAction<number[][]>>;
-  rows: number;
   cols: number;
+  lockTetromino: () => void;
+  newTetromino: () => void;
+  isCollision: () => boolean;
 }
 
 const useGameControls = ({
@@ -16,18 +18,20 @@ const useGameControls = ({
   setPosition,
   tetromino,
   setTetromino,
-  rows,
   cols,
+  lockTetromino,
+  newTetromino,
+  isCollision,
 }: GameControls) => {
-
+  //FIXME: Új alakzat indítása ????
   // Mozgás lefelé
   const moveDown = () => {
-    setPosition((prev) => {
-      if (prev.row + 1 + tetromino.length > rows) {
-        return prev;
-      }
-      return { ...prev, row: prev.row + 1 };
-    });
+    if (isCollision()) {
+      lockTetromino();
+      newTetromino();
+    } else {
+      setPosition((prev) => ({ ...prev, row: prev.row + 1 }));
+    }
   };
 
   // Mozgás balra
@@ -82,6 +86,13 @@ const useGameControls = ({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [position, tetromino]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      moveDown();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [position]);
 
   return {
     moveDown,
