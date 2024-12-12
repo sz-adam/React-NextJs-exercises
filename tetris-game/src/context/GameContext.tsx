@@ -11,6 +11,8 @@ const defaultState: GameState = {
   generateBoard: () => [],
   placeTetrominoOnBoard: () => [],
   color: "",
+  gameOver: false,
+  newGame: () => {},
 };
 
 const cols = 10;
@@ -33,6 +35,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
   const [tetromino, setTetromino] = useState<number[][]>(getRandomTetromino());
   const [position, setPosition] = useState({ row: 0, col: 3 });
   const [color, setColor] = useState<string>(randomColor);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   //táblán elhelyezés
   const placeTetrominoOnBoard = (): string[][] => {
@@ -78,9 +81,18 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
 
   // Új alakzat
   const newTetromino = () => {
-    setTetromino(getRandomTetromino());
-    setPosition({ row: 0, col: 3 });
-    setColor(randomColor());
+    const newTetrominoShape = getRandomTetromino();
+    const startingPosition = { row: 0, col: 3 };
+    const newColor = randomColor();
+
+    setTetromino(newTetrominoShape);
+    setPosition(startingPosition);
+    setColor(newColor);
+
+    // Játék vége ellenőrzése
+    if (isGameOver()) {
+      setGameOver(true);
+    }
   };
 
   // alakzatok ütközése és a tábla alja
@@ -97,6 +109,29 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         return false;
       })
     );
+  };
+
+  const isGameOver = (): boolean => {
+    return tetromino.some((row, y) =>
+      row.some((cell, x) => {
+        if (cell) {
+          const boardX = position.col + x;
+          const boardY = position.row + y;
+          if (board[boardY]?.[boardX]) {
+            return true;
+          }
+        }
+        return false;
+      })
+    );
+  };
+
+  const newGame = () => {
+    setBoard(generateBoard());
+    setTetromino(getRandomTetromino());
+    setPosition({ row: 0, col: 3 });
+    setColor(randomColor());
+    setGameOver(false);
   };
 
   useGameControls({
@@ -119,6 +154,8 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         generateBoard,
         placeTetrominoOnBoard,
         color,
+        gameOver,
+        newGame,
       }}
     >
       {children}

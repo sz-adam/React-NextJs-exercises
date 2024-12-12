@@ -7,4 +7,6 @@ export interface GameState {
   generateBoard: () => string[][];
   placeTetrominoOnBoard: () => string[][];
   color: string;
+  gameOver: boolean;
+  newGame: () => void;
 }

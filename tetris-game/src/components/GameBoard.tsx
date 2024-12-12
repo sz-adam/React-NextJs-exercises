@@ -2,8 +2,9 @@ import { useGameContext } from "../context/GameContext";
 
 //FIXME: Tetrominok létrehozása / véletlenszerű generálása / random szin
 //FIXME: véletlenszerű megjelenítése középen
-//TODO: esés
-//TODO: mozgatás / forgatás
+//FIXME: esés
+//FIXME: mozgatás / forgatás
+//TODO: szebbé varázsolni a GameOver componenst
 //TODO: sorok törlése
 //TODO: pontozás / megjelenítés
 //TODO: következő megjelenítése
@@ -19,7 +20,7 @@ const GameBoard: React.FC = () => {
             key={`${rowIndex}-${colIndex}`}
             className={`w-8 h-8 ${
               cell ? color : "bg-slate-800"
-            }  border border-slate-900`}
+            } border border-slate-900`}
           ></div>
         ))
       )}
