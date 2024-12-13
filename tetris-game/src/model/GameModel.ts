@@ -9,4 +9,5 @@ export interface GameState {
   color: string;
   gameOver: boolean;
   newGame: () => void;
+  score: number;
 }

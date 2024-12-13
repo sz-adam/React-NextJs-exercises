@@ -13,6 +13,7 @@ const defaultState: GameState = {
   color: "",
   gameOver: false,
   newGame: () => {},
+  score: 0,
 };
 
 const cols = 10;
@@ -36,6 +37,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
   const [position, setPosition] = useState({ row: 0, col: 3 });
   const [color, setColor] = useState<string>(randomColor);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
 
   //táblán elhelyezés
   const placeTetrominoOnBoard = (): string[][] => {
@@ -75,7 +77,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
           }
         });
       });
-      return newBoard;
+
+      // sorok törlése
+      return clearFullRows(newBoard);
     });
   };
 
@@ -126,12 +130,27 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
     );
   };
 
+  //új játék indítása
   const newGame = () => {
     setBoard(generateBoard());
     setTetromino(getRandomTetromino());
     setPosition({ row: 0, col: 3 });
     setColor(randomColor());
     setGameOver(false);
+    setScore(0);
+  };
+
+  //sorok törlése
+  const clearFullRows = (board: string[][]): string[][] => {
+    // a teli sorokat töröljük
+    const newBoard = board.filter((row) => row.some((cell) => cell === null));    
+    const rowsCleared = rows - newBoard.length;
+    setScore((prevScore) => prevScore + rowsCleared);
+    //ugyanannyi sort létrehozunk amennyit töröltünk
+    const emptyRows = Array.from({ length: rowsCleared }, () =>
+      Array(cols).fill(null)
+    );
+    return [...emptyRows, ...newBoard];
   };
 
   useGameControls({
@@ -156,6 +175,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         color,
         gameOver,
         newGame,
+        score,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import GameOver from "../components/GameOver";
 import { useGameContext } from "../context/GameContext";
 
 const Game = () => {
-  const { gameOver } = useGameContext();
+  const { gameOver, score } = useGameContext();
 
   return (
     <div>
@@ -15,7 +15,10 @@ const Game = () => {
             Tetris Game
           </h1>
 
-          <GameBoard />
+          <div className="flex">
+            <GameBoard />
+            <div className="text-white text-3xl text-center m-2">{score}</div>
+          </div>
         </>
       )}
     </div>
