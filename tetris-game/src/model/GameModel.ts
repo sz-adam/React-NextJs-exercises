@@ -10,4 +10,8 @@ export interface GameState {
   gameOver: boolean;
   newGame: () => void;
   score: number;
+  moveDown: () => void;
+  moveLeft: () => void;
+  moveRight: () => void;
+  rotate: () => void;
 }

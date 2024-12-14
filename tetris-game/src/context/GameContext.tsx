@@ -14,6 +14,10 @@ const defaultState: GameState = {
   gameOver: false,
   newGame: () => {},
   score: 0,
+  moveDown: () => {},
+  moveLeft: () => {},
+  moveRight: () => {},
+  rotate: () => {},
 };
 
 const cols = 10;
@@ -143,7 +147,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
   //sorok törlése
   const clearFullRows = (board: string[][]): string[][] => {
     // a teli sorokat töröljük
-    const newBoard = board.filter((row) => row.some((cell) => cell === null));    
+    const newBoard = board.filter((row) => row.some((cell) => cell === null));
     const rowsCleared = rows - newBoard.length;
     setScore((prevScore) => prevScore + rowsCleared);
     //ugyanannyi sort létrehozunk amennyit töröltünk
@@ -153,7 +157,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
     return [...emptyRows, ...newBoard];
   };
 
-  useGameControls({
+  const { moveDown, moveLeft, moveRight, rotate } = useGameControls({
     position,
     setPosition,
     tetromino,
@@ -176,6 +180,10 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         gameOver,
         newGame,
         score,
+        moveDown,
+        moveLeft,
+        moveRight,
+        rotate,
       }}
     >
       {children}
