@@ -1,15 +1,7 @@
 import { useGameContext } from "../context/GameContext";
 import MobileButton from "./MobileButton";
 
-//FIXME: Tetrominok létrehozása / véletlenszerű generálása / random szin
-//FIXME: véletlenszerű megjelenítése középen
-//FIXME: esés
-//FIXME: mozgatás / forgatás
-//TODO: szebbé varázsolni a GameOver componenst
-//FIXME: sorok törlése
-//FIXME: pontozás / megjelenítés
 //TODO: következő megjelenítése
-//TODO: Mobil nézetben is játszható legyen
 
 const GameBoard: React.FC = () => {
   const { board, color } = useGameContext();

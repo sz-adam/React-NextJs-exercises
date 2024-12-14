@@ -23,7 +23,7 @@ const useGameControls = ({
   newTetromino,
   isCollision,
 }: GameControls) => {
-  //FIXME: Új alakzat indítása ????
+  
   // Mozgás lefelé
   const moveDown = () => {
     if (isCollision()) {

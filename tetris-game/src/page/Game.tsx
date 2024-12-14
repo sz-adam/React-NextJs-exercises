@@ -21,7 +21,7 @@ const Game = () => {
             </div>
             <GameBoard />
           </div>
-          <div className="text-white text-2xl text-center m-1 border rounded-3xl px-10 h-16 flex items-center hidden md:flex">
+          <div className="text-white text-2xl text-center m-1 border rounded-3xl px-10 h-16 items-center hidden md:flex">
             Score: {score}
           </div>
         </div>
