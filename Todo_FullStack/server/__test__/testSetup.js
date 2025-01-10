@@ -4,6 +4,7 @@ const {
   createTodo,
   updateTodo,
   deleteTodo,
+  completeTodo,
 } = require("../controllers/todoController");
 
 jest.mock("@prisma/client", () => {
@@ -14,6 +15,8 @@ jest.mock("@prisma/client", () => {
       description: "Description 1",
       priority: "High",
       completed: false,
+      category: "Travel",
+      dueDate: "2025-01-15T18:00:00Z",
     },
     {
       id: 2,
@@ -21,6 +24,8 @@ jest.mock("@prisma/client", () => {
       description: "Description 2",
       priority: "Low",
       completed: true,
+      category: "Travel",
+      dueDate: "2025-01-15T18:00:00Z",
     },
   ]);
 
@@ -30,14 +35,26 @@ jest.mock("@prisma/client", () => {
     description: "New Description",
     priority: "Medium",
     completed: false,
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
   });
 
   const mockUpdate = jest.fn().mockResolvedValue({
     id: 1,
     title: "Updated Todo",
     description: "Updated Description",
+    priority: "High",   
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
+  });
+  const completeTodo = jest.fn().mockResolvedValue({
+    id: 1,
+    title: "Mock Todo 1",
+    description: "Description 1",
     priority: "High",
-    completed: true,
+    completed:true,
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
   });
 
   const mockDelete = jest.fn().mockResolvedValue({
@@ -46,6 +63,8 @@ jest.mock("@prisma/client", () => {
     description: "Description 1",
     priority: "High",
     completed: false,
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
   });
 
   return {
@@ -55,6 +74,7 @@ jest.mock("@prisma/client", () => {
         create: mockCreate,
         update: mockUpdate,
         delete: mockDelete,
+        complete: completeTodo,
       },
       $disconnect: jest.fn(),
     })),
@@ -68,6 +88,7 @@ const router = express.Router();
 router.get("/todos", getTodos);
 router.post("/todos", createTodo);
 router.put("/todos/:id", updateTodo);
+router.put("/todos/complete/:id", completeTodo);
 router.delete("/todos/:id", deleteTodo);
 
 app.use(router);

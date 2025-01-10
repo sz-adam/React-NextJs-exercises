@@ -8,6 +8,8 @@ const mockTodos = [
     description: "Description 1",
     priority: "High",
     completed: false,
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
   },
   {
     id: 2,
@@ -15,6 +17,8 @@ const mockTodos = [
     description: "Description 2",
     priority: "Low",
     completed: true,
+    category: "Travel",
+    dueDate: "2025-01-15T18:00:00Z",
   },
 ];
 
@@ -22,13 +26,25 @@ const newTodo = {
   title: "New Todo",
   description: "New Description",
   priority: "Medium",
+  category: "Travel",
+  dueDate: "2025-01-15T18:00:00Z",
 };
 
 const updatedTodo = {
   title: "Updated Todo",
   description: "Updated Description",
   priority: "High",
+  category: "Travel",
+  dueDate: "2025-01-15T18:00:00Z",
+};
+const completeTodo = {
+  
+  title: "Mock Todo 1",
+  description: "Description 1",
+  priority: "High",
   completed: true,
+  category: "Travel",
+  dueDate: "2025-01-15T18:00:00Z",
 };
 
 describe("Todo Controller Tests", () => {
@@ -57,6 +73,17 @@ describe("Todo Controller Tests", () => {
       checkResponse(response, 200, { id: 1, ...updatedTodo });
     });
   });
+ describe("PUT /todos/complete/:id", () => {
+   it("should update a completed todo", async () => {
+     const response = await request(app)
+       .put("/todos/complete/1")
+       .send(completeTodo);
+     checkResponse(response, 200, {
+       id: 1,
+       completed: true,
+     });
+   });
+ });
 
   describe("DELETE /todos/:id", () => {
     it("should delete a todo and return the deleted object", async () => {
