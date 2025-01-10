@@ -6,6 +6,7 @@ const {
   createTodo,
   updateTodo,
   deleteTodo,
+  completeTodo,
 } = require("../controllers/todoController");
 const {
   getPriorities,
@@ -16,6 +17,7 @@ const {
 router.get("/", getTodos);
 router.post("/", createTodo);
 router.put("/:id", updateTodo);
+router.put("/complete/:id", completeTodo);
 router.delete("/:id", deleteTodo);
 router.get("/priorities", getPriorities);
 router.get("/categories", getCategories);

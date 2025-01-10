@@ -3,7 +3,6 @@ const handleError = require("./handleError");
 
 const prisma = new PrismaClient();
 
-
 const getTodos = async (req, res) => {
   try {
     const todos = await prisma.todo.findMany();
@@ -16,7 +15,7 @@ const getTodos = async (req, res) => {
 };
 
 const createTodo = async (req, res) => {
-  const { title, description, priority, category,dueDate } = req.body;
+  const { title, description, priority, category, dueDate } = req.body;
   try {
     const newTodo = await prisma.todo.create({
       data: {
@@ -35,7 +34,7 @@ const createTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, description, priority, completed, category,dueDate } = req.body;
+  const { title, description, priority, dueDate } = req.body;
 
   try {
     const updatedTodo = await prisma.todo.update({
@@ -43,8 +42,28 @@ const updateTodo = async (req, res) => {
       data: {
         title,
         description,
-        priority,       
+        priority,
         dueDate,
+      },
+    });
+
+    res.status(200).json(updatedTodo);
+  } catch (error) {
+    handleError(res, error, "Error updating todo");
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+const completeTodo = async (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body;
+
+  try {
+    const updatedTodo = await prisma.todo.update({
+      where: { id: parseInt(id) },
+      data: {
+        completed,
       },
     });
 
@@ -75,4 +94,5 @@ module.exports = {
   createTodo,
   updateTodo,
   deleteTodo,
+  completeTodo,
 };
