@@ -16,13 +16,15 @@ const getTodos = async (req, res) => {
 };
 
 const createTodo = async (req, res) => {
-  const { title, description, priority } = req.body;
+  const { title, description, priority, category,dueDate } = req.body;
   try {
     const newTodo = await prisma.todo.create({
       data: {
         title,
         description,
         priority,
+        category,
+        dueDate,
       },
     });
     res.status(201).json(newTodo);
@@ -33,7 +35,7 @@ const createTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, description, priority, completed } = req.body;
+  const { title, description, priority, completed, category,dueDate } = req.body;
 
   try {
     const updatedTodo = await prisma.todo.update({
@@ -41,8 +43,8 @@ const updateTodo = async (req, res) => {
       data: {
         title,
         description,
-        priority,
-        completed,
+        priority,       
+        dueDate,
       },
     });
 
