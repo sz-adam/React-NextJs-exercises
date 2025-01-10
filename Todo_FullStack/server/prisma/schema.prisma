@@ -17,14 +17,25 @@ model Todo {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  priority    Priority @default(LOW) 
+  priority    Priority @default(Low) 
   completed   Boolean  @default(false) 
   createdAt   DateTime @default(now()) 
-  updatedAt   DateTime @updatedAt     
+  updatedAt   DateTime @updatedAt  
+  dueDate     DateTime?   
+  category    Category @default(Work) 
 }
 
 enum Priority {
-  LOW
-  MEDIUM
-  HIGH
+  Low
+  Medium
+  High
+}
+
+enum Category {
+  Work
+  Personal
+  Shopping
+  Leisure
+  Study
+  Travel
 }
