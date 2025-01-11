@@ -1,16 +1,13 @@
-import { useState } from 'react'
-import { Button } from "@/components/ui/button";
-import './App.css'
+import { ThemeProvider } from "./context/themeContext";
+
+import Header from "./components/Header";
 
 function App() {
-
   return (
-    <div>
-      <Button variant="default" size="lg">
-        Click me
-      </Button>
-    </div>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <Header />
+    </ThemeProvider>
   );
 }
 
-export default App
+export default App;
