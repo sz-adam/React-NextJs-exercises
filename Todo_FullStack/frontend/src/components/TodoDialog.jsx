@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -10,14 +10,36 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import { useTodos } from "@/context/TodoContext";
+import { InputField } from "./InputField";
+import { DropdownMenuComponent } from "./DropdownMenuComponent";
 
 export function TodoDialog({ open, setOpen }) {
+  const { addTodo, category, priority } = useTodos();
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [dueDate, setDueDate] = useState("");
+
+  const handleAddTodo = () => {
+    if (!title || !selectedPriority || !dueDate || !selectedCategory) {
+      alert("Please fill in all required fields!");
+      return;
+    }
+    const isoDueDate = `${dueDate}T00:00:00Z`;
+
+    addTodo(title, description, selectedPriority, selectedCategory, isoDueDate);
+
+    setTitle("");
+    setDescription("");
+    setSelectedPriority("");
+    setSelectedCategory("");
+    setDueDate("");
+    setOpen(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -38,79 +60,51 @@ export function TodoDialog({ open, setOpen }) {
           Fill out the details below to add a new task to your list.
         </DialogDescription>
         <div className="space-y-4">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium">
-              Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter task title"
-            />
-          </div>
+          <InputField
+            id="title"
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter task title"
+          />
 
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium">
-              Description
-            </label>
-            <textarea
-              id="description"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter task description"
-            />
-          </div>
+          <InputField
+            id="description"
+            label="Description"
+            type="textarea"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter task description"
+          />
 
-          <div>
-            <label htmlFor="priority" className="block text-sm font-medium">
-              Priority
-            </label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full">
-                  Select Priority
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem value="low">Low</DropdownMenuItem>
-                <DropdownMenuItem value="medium">Medium</DropdownMenuItem>
-                <DropdownMenuItem value="high">High</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <DropdownMenuComponent
+            label="Priority"
+            options={priority}
+            selectedValue={selectedPriority}
+            onSelect={setSelectedPriority}
+          />
 
-          <div>
-            <label htmlFor="dueDate" className=" text-sm font-medium">
-              Due Date
-            </label>
-            <input
-              type="date"
-              className="flex w-full justify-center border p-2 rounded-lg text-black"
-            />
-          </div>
+          <InputField
+            id="dueDate"
+            label="Due Date"
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+          />
 
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium">
-              Category
-            </label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full">
-                  Select Category
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem value="work">Work</DropdownMenuItem>
-                <DropdownMenuItem value="personal">Personal</DropdownMenuItem>
-                <DropdownMenuItem value="shopping">Shopping</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <DropdownMenuComponent
+            label="Category"
+            options={category}
+            selectedValue={selectedCategory}
+            onSelect={setSelectedCategory}
+          />
         </div>
 
         <DialogFooter>
           <Button onClick={() => setOpen(false)}>Close</Button>
-          <Button variant="primary">Add Todo</Button>
+          <Button variant="primary" onClick={handleAddTodo}>
+            Add Todo
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

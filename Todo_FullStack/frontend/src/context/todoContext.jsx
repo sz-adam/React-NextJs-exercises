@@ -12,7 +12,6 @@ export const TodoProvider = ({ children }) => {
   const [category, setCategory] = useState([]);
   const [priority, setPriority] = useState([]);
 
-  console.log(category, priority);
 
   // Összes Todo lekérése
   useEffect(() => {
@@ -29,7 +28,20 @@ export const TodoProvider = ({ children }) => {
   }, []);
 
   // CRUD műveletek
-  const addTodo = async (title, description, priority, category, dueDate) => {};
+  const addTodo = async (title, description, priority, category, dueDate) => {
+    try {
+      const response = await axios.post(TODOAPI, {
+        title,
+        description,
+        priority,
+        category,
+        dueDate,
+      });
+      setTodos([...todos, response.data]);
+    } catch (error) {
+      console.error("Error adding todo:", error);
+    }
+  };
 
   const updateTodo = async (id, updatedTitle) => {};
 
@@ -66,15 +78,7 @@ export const TodoProvider = ({ children }) => {
 
   return (
     <TodoContext.Provider
-      value={{
-        todos,
-        addTodo,
-        updateTodo,
-        deleteTodo,
-        completeTodo,
-        category,
-        priority,
-      }}
+      value={{ todos, addTodo, updateTodo, deleteTodo, completeTodo, category, priority }}
     >
       {children}
     </TodoContext.Provider>
