@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -15,8 +15,8 @@ import { InputField } from "./InputField";
 import { DropdownMenuComponent } from "./DropdownMenuComponent";
 import { AlertDestructive } from "./Alert";
 
-export function TodoDialog({ open, setOpen }) {
-  const { addTodo, category, priority } = useTodos();
+export function TodoDialog({ open, setOpen, todo }) {
+  const { addTodo, category, priority, updateTodo } = useTodos();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -25,8 +25,49 @@ export function TodoDialog({ open, setOpen }) {
   const [dueDate, setDueDate] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
+  useEffect(() => {
+    if (todo) {
+      setTitle(todo.title);
+      setDescription(todo.description);
+      setSelectedPriority(todo.priority);
+      setDueDate(todo.dueDate.slice(0, 10));
+    }
+  }, [todo]);
+
+  const handleEdit = async () => {
+    if (!title || !selectedPriority || !dueDate || !description) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+      return;
+    }
+
+    const isoDueDate = `${dueDate}T00:00:00Z`;
+
+    const updatedData = {
+      title,
+      description,
+      priority: selectedPriority,
+      dueDate: isoDueDate,
+    };
+
+    try {
+      await updateTodo(todo.id, updatedData);
+      setOpen(false);
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
+  };
+
   const handleAddTodo = () => {
-    if (!title || !selectedPriority || !dueDate || !selectedCategory) {
+    if (
+      !title ||
+      !selectedPriority ||
+      !dueDate ||
+      !selectedCategory ||
+      !description
+    ) {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
@@ -60,11 +101,11 @@ export function TodoDialog({ open, setOpen }) {
         {showAlert && <AlertDestructive />}
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            Add a New Todo
+            {todo ? "Edit Todo" : "Add a New Todo"}
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="text-center">
-          Fill out the details below to add a new task to your list.
+          Fill out the details below to {todo ? "edit" : "add"} your task.
         </DialogDescription>
         <div className="space-y-4">
           <InputField
@@ -99,19 +140,29 @@ export function TodoDialog({ open, setOpen }) {
             onChange={(e) => setDueDate(e.target.value)}
           />
 
-          <DropdownMenuComponent
-            label="Category"
-            options={category}
-            selectedValue={selectedCategory}
-            onSelect={setSelectedCategory}
-          />
+          {todo ? (
+            ""
+          ) : (
+            <DropdownMenuComponent
+              label="Category"
+              options={category}
+              selectedValue={selectedCategory}
+              onSelect={setSelectedCategory}
+            />
+          )}
         </div>
 
         <DialogFooter>
           <Button onClick={() => setOpen(false)}>Close</Button>
-          <Button variant="primary" onClick={handleAddTodo}>
-            Add Todo
-          </Button>
+          {todo ? (
+            <Button variant="primary" onClick={handleEdit}>
+              Edit Todo
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleAddTodo}>
+              Add Todo
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

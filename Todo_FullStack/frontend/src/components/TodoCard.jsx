@@ -7,10 +7,13 @@ import {
 } from "@/components/ui/card";
 import { CheckCheck, RotateCcw, Trash2 } from "lucide-react";
 import { useTodos } from "../context/todoContext";
+import { TodoDialog } from "./TodoDialog";
+import { useState } from "react";
 
 function TodoCard({ todo }) {
   const { deleteTodo, completeTodo } = useTodos();
   const cardOpacityClass = todo.completed ? "opacity-50" : "opacity-100";
+  const [open, setOpen] = useState(false);
 
   return (
     <Card className={`w-full shadow-md ${cardOpacityClass}`}>
@@ -48,7 +51,7 @@ function TodoCard({ todo }) {
           onClick={() => completeTodo(todo.id)}
         />
         <div className="flex space-x-6">
-          <RotateCcw color="#225e8c" cursor="pointer" />
+          <RotateCcw color="#225e8c" cursor="pointer"onClick={() => setOpen(true)} />
           <Trash2
             color="#e42121"
             cursor="pointer"
@@ -56,6 +59,7 @@ function TodoCard({ todo }) {
           />
         </div>
       </div>
+      <TodoDialog open={open} setOpen={setOpen} todo={todo} />
     </Card>
   );
 }
