@@ -13,6 +13,7 @@ import { Plus } from "lucide-react";
 import { useTodos } from "@/context/TodoContext";
 import { InputField } from "./InputField";
 import { DropdownMenuComponent } from "./DropdownMenuComponent";
+import { AlertDestructive } from "./Alert";
 
 export function TodoDialog({ open, setOpen }) {
   const { addTodo, category, priority } = useTodos();
@@ -22,10 +23,14 @@ export function TodoDialog({ open, setOpen }) {
   const [selectedPriority, setSelectedPriority] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleAddTodo = () => {
     if (!title || !selectedPriority || !dueDate || !selectedCategory) {
-      alert("Please fill in all required fields!");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
       return;
     }
     const isoDueDate = `${dueDate}T00:00:00Z`;
@@ -38,6 +43,7 @@ export function TodoDialog({ open, setOpen }) {
     setSelectedCategory("");
     setDueDate("");
     setOpen(false);
+    setShowAlert(false);
   };
 
   return (
@@ -51,6 +57,7 @@ export function TodoDialog({ open, setOpen }) {
         </Button>
       </DialogTrigger>
       <DialogContent>
+        {showAlert && <AlertDestructive />}
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             Add a New Todo
