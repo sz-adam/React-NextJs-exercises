@@ -15,7 +15,7 @@ import { InputField } from "./InputField";
 import { DropdownMenuComponent } from "./DropdownMenuComponent";
 import { AlertDestructive } from "./Alert";
 
-export function TodoDialog({ open, setOpen, todo }) {
+export function TodoDialog({ open, setOpen, todo, date }) {
   const { addTodo, category, priority, updateTodo } = useTodos();
 
   const [title, setTitle] = useState("");
@@ -25,6 +25,11 @@ export function TodoDialog({ open, setOpen, todo }) {
   const [dueDate, setDueDate] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
+  useEffect(() => {
+    if (date) {
+      setDueDate(date);
+    }
+  }, [date]);
   useEffect(() => {
     if (todo) {
       setTitle(todo.title);
@@ -45,7 +50,7 @@ export function TodoDialog({ open, setOpen, todo }) {
 
     const isoDueDate = `${dueDate}T00:00:00Z`;
 
-    const updatedData = {
+    const updatedDate = {
       title,
       description,
       priority: selectedPriority,
@@ -53,13 +58,12 @@ export function TodoDialog({ open, setOpen, todo }) {
     };
 
     try {
-      await updateTodo(todo.id, updatedData);
+      await updateTodo(todo.id, updatedDate);
       setOpen(false);
     } catch (error) {
       console.error("Error updating todo:", error);
     }
   };
-
   const handleAddTodo = () => {
     if (
       !title ||
@@ -132,13 +136,17 @@ export function TodoDialog({ open, setOpen, todo }) {
             onSelect={setSelectedPriority}
           />
 
-          <InputField
-            id="dueDate"
-            label="Due Date"
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-          />
+          {date ? (
+            <div className="text-center">Date: {date}</div>
+          ) : (
+            <InputField
+              id="dueDate"
+              label="Due Date"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          )}
 
           {todo ? (
             ""
