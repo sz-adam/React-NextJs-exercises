@@ -42,7 +42,19 @@ export const TodoProvider = ({ children }) => {
     }
   };
 
-  const updateTodo = async (id, updatedTitle) => {};
+  const updateTodo = async (id, updatedData) => {
+    try {
+      const response = await axios.put(`${TODOAPI}/${id}`, updatedData);
+      console.log("Todo successfully updated:", response.data);
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === id ? { ...todo, ...updatedData } : todo
+        )
+      );
+    } catch (error) {
+      console.error("Update Error:", error);
+    }
+  };
 
   const deleteTodo = async (id) => {
     try {
