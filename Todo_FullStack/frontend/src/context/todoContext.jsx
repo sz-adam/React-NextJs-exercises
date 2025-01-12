@@ -12,7 +12,6 @@ export const TodoProvider = ({ children }) => {
   const [category, setCategory] = useState([]);
   const [priority, setPriority] = useState([]);
 
-
   // Összes Todo lekérése
   useEffect(() => {
     const fetchTodos = async () => {
@@ -45,9 +44,30 @@ export const TodoProvider = ({ children }) => {
 
   const updateTodo = async (id, updatedTitle) => {};
 
-  const deleteTodo = async (id) => {};
+  const deleteTodo = async (id) => {
+    try {
+      await axios.delete(`${TODOAPI}/${id}`);
 
-  const completeTodo = async (id) => {};
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    } catch (error) {
+      console.error("Delete Error:", error);
+    }
+  };
+
+  const completeTodo = async (id) => {
+    try {
+      await axios.put(`${TODOAPI}/complete/${id}`, {
+        completed: true,
+      });
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === id ? { ...todo, completed: true } : todo
+        )
+      );
+    } catch (error) {
+      console.error("Complete Error:", error);
+    }
+  };
 
   //prioritások lekérése
   useEffect(() => {
@@ -78,12 +98,19 @@ export const TodoProvider = ({ children }) => {
 
   return (
     <TodoContext.Provider
-      value={{ todos, addTodo, updateTodo, deleteTodo, completeTodo, category, priority }}
+      value={{
+        todos,
+        addTodo,
+        updateTodo,
+        deleteTodo,
+        completeTodo,
+        category,
+        priority,
+      }}
     >
       {children}
     </TodoContext.Provider>
   );
 };
 
-// 4. Hook a könnyebb használatért
 export const useTodos = () => useContext(TodoContext);
