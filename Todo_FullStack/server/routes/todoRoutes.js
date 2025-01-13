@@ -7,6 +7,7 @@ const {
   updateTodo,
   deleteTodo,
   completeTodo,
+  getTodosByCategory,
 } = require("../controllers/todoController");
 const {
   getPriorities,
@@ -21,5 +22,6 @@ router.put("/complete/:id", completeTodo);
 router.delete("/:id", deleteTodo);
 router.get("/priorities", getPriorities);
 router.get("/categories", getCategories);
+router.get("/category/:category", getTodosByCategory);
 
 module.exports = router;

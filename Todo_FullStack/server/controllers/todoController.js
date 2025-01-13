@@ -89,10 +89,27 @@ const deleteTodo = async (req, res) => {
   }
 };
 
+const getTodosByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const todos = await prisma.todo.findMany({
+      where: { category },
+    });
+
+    res.status(200).json(todos);
+  } catch (error) {
+    handleError(res, error, "Error fetching todos by category");
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 module.exports = {
   getTodos,
   createTodo,
   updateTodo,
   deleteTodo,
   completeTodo,
+  getTodosByCategory,
 };
