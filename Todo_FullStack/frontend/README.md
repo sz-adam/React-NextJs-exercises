@@ -1,8 +1,15 @@
-# React + Vite
+# React + Vite +Tailwind CSS + ShadCN Ui 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Az alkalmazás célja a Contextusok, TailwindCss és a ShadCN UI használatának és integrációjának gyakorlása egy modern React alkalmazásban.
 
-Currently, two official plugins are available:
+Full responsive, támogatja a sötét módot , Todo létrehozása/szerkesztése/törlése/ összes lekérése 
+Összes kategóriát egybe és kategóriák szerint is megjeleníti . 
+Naptárból is elérhető a létrehozás. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Telepítés
+1. Klónozd le a projektet:
+2. Navigálj a project könyvtárába és telepítsd a szükséges függőségeket
+3. indítás : npm run dev
+
+
+![Todo List](./src/assets/todoList.png)
