@@ -10,13 +10,15 @@ import { useTodos } from "../context/todoContext";
 import { TodoDialog } from "./TodoDialog";
 import { useState } from "react";
 
-function TodoCard({ todo }) {
+function TodoCard({ todo, priorityBorder }) {
   const { deleteTodo, completeTodo } = useTodos();
-  const cardOpacityClass = todo.completed ? "opacity-50" : "opacity-100";
+  const cardOpacityClass = todo.completed ? "opacity-30" : "opacity-100";
   const [open, setOpen] = useState(false);
 
   return (
-    <Card className={`w-full shadow-md ${cardOpacityClass}`}>
+    <Card
+      className={`w-full shadow-md ${cardOpacityClass} border-t-4 ${priorityBorder}`}
+    >
       <CardHeader>
         <CardTitle className="text-xl font-semibold text-center">
           {todo.title}
@@ -51,7 +53,15 @@ function TodoCard({ todo }) {
           onClick={() => completeTodo(todo.id)}
         />
         <div className="flex space-x-6">
-          <RotateCcw color="#225e8c" cursor="pointer"onClick={() => setOpen(true)} />
+          {todo.completed ? (
+            ""
+          ) : (
+            <RotateCcw
+              color="#225e8c"
+              cursor="pointer"
+              onClick={() => setOpen(true)}
+            />
+          )}
           <Trash2
             color="#e42121"
             cursor="pointer"
