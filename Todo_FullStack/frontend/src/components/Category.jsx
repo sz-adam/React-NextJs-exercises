@@ -5,15 +5,40 @@ import { TodoDialog } from "./TodoDialog";
 import { useTodos } from "@/context/TodoContext";
 
 export function Category() {
-    const { category } = useTodos();
-  
+  const { todos, category, fetchCategoryFilter } = useTodos();
+
   const [open, setOpen] = useState(false);
+
+  const handleCategoryClick = (categoryName) => {
+    fetchCategoryFilter(categoryName);
+  };
+
+  const isCategoryEmpty = (categoryName) => {
+    const filteredTodos = todos.filter(
+      (todo) => todo.category === categoryName
+    );
+    return filteredTodos.length === 0;
+  };
+
   return (
     <div className="p-4 w-full lg:w-1/5 flex flex-wrap lg:flex-col justify-center lg:justify-start  items-center text-center gap-2">
       <h2 className="text-2xl font-bold mb-4 hidden lg:block">Categories</h2>
       <div className="flex flex-wrap gap-2 lg:flex-col lg:gap-0 justify-center  text-center">
+        <Button
+          variant="yellow"
+          className="my-2 px-6 "
+          onClick={() => handleCategoryClick("All")}
+        >
+          All
+        </Button>
         {category.map((categories) => (
-          <Button key={categories} variant="yellow" className="my-2 px-6 ">
+          <Button
+            key={categories}
+            variant="yellow"
+            className="my-2 px-6 "
+            onClick={() => handleCategoryClick(categories)}
+            disabled={isCategoryEmpty(categories)}
+          >
             {categories}
           </Button>
         ))}

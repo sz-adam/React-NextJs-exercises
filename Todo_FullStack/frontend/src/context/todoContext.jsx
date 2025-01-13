@@ -22,7 +22,6 @@ export const TodoProvider = ({ children }) => {
         console.error("Error fetching todos:", error);
       }
     };
-
     fetchTodos();
   }, []);
 
@@ -108,6 +107,20 @@ export const TodoProvider = ({ children }) => {
     fetchCategory();
   }, []);
 
+  const fetchCategoryFilter = async (name) => {
+    try {
+      if (name === "All") {
+        const response = await axios.get(TODOAPI);
+        setTodos(response.data);
+      } else {
+        const response = await axios.get(`${TODOAPI}/category/${name}`);
+        setTodos(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching todos:", error);
+    }
+  };
+
   return (
     <TodoContext.Provider
       value={{
@@ -118,6 +131,7 @@ export const TodoProvider = ({ children }) => {
         completeTodo,
         category,
         priority,
+        fetchCategoryFilter,
       }}
     >
       {children}
